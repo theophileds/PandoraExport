@@ -1,10 +1,10 @@
 #!/usr/bin/python
  
+import time
 import json
 import requests
-from blowfish import *
 from keys import *
-import time
+from blowfish import *
 
 
 def PartnerLogin():

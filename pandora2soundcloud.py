@@ -4,6 +4,7 @@
 import os
 import time
 import json
+import codecs
 import requests
 import soundcloud
 from connections import *
@@ -76,7 +77,7 @@ client = soundcloud.Client(client_id='YOUR_CLIENT_ID',
 print client.get('/me').username
  
  
-with open(music, "r") as f: #Open the file with generated song by Pandora API
+with codecs.open(music,'r',encoding='utf8') as f:
     for line in f:
         num += 1 #Count the number of all song
         choices = {}
