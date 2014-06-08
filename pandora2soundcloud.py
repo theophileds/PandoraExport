@@ -1,14 +1,18 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
  
+import os
+import time
 import json
 import requests
+import soundcloud
 from connections import *
-import time
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-import soundcloud
 
 #--------------------------Connection To Pandora API-----------------
+
+os.remove('music.txt') if os.path.exists('music.txt') else None
 
 StartTime = int(time.time()) #Start Time of the API in Unix timestamp format
 
@@ -45,8 +49,8 @@ for i in range(number/4): #The number is divided by 4 because it retrive song by
     syncTime = TimeSync(syncTime, StartTime)
     stationToken = CreateStation(partnerId, userAuthToken, userId, syncTime, musicToken) #Generate station with musicToken and retrieve stationToken
 
-    syncTime = TimeSync(syncTime, StartTime)
     try:
+        syncTime = TimeSync(syncTime, StartTime)
         GetPlaylist(partnerId, userAuthToken, userId, syncTime, stationToken) #With stationToken connect to station, print playlist song and savit it to file
     except KeyError:
 	print "Oops!  Pandora have been overwhelmed, try to set a longer sleep time next time.  Processing playlist creation on SoundCloud..."
@@ -63,10 +67,10 @@ num = 0
 match = 0
 
 # create client object with app and user credentials
-client = Soundcloud.new(:client_id => 'YOUR_CLIENT_ID',
-                        :client_secret => 'YOUR_CLIENT_SECRET',
-                        :username => 'YOUR_USERNAME',
-                        :password => 'YOUR_PASSWORD')
+client = soundcloud.Client(client_id='YOUR_CLIENT_ID',
+                           client_secret='YOUR_CLIENT_SECRET',
+                           username='YOUR_USERNAME',
+                           password='YOUR_PASSWORD')
 
 # print authenticated user's username
 print client.get('/me').username
@@ -76,7 +80,12 @@ with open(music, "r") as f: #Open the file with generated song by Pandora API
     for line in f:
         num += 1 #Count the number of all song
         choices = {}
-	tracks = client.get('/tracks', q= line, limit=20) #Search track based on file and print the frist 200 result
+        try:
+            tracks = client.get('/tracks', q= line, limit=20) #Search track based on file and print the frist 200 result
+        except requests.HTTPError:
+            tracks = client.get('/tracks', q= line, limit=20)
+
+	tracks = client.get('/tracks', q= line, limit=20) #Search track based on file and print the frist 20 result
         for track in tracks: #for earch song in all songs
             if fuzz.ratio(line, (track.user['username'] +" - "+ track.title)) >= 85: #if the combo (user + song) match it's probably an official one
 		print "\n---------- OFFICIAL ---------"

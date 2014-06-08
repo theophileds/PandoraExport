@@ -33,8 +33,8 @@ def UserLogin(partnerId, partnerAuthToken, syncTime):
     parameter = {"method" : 'auth.userLogin', "partner_id" : partnerId, "auth_token" : partnerAuthToken}
     values = {
     "loginType": "user",
-    "username": "YOUR PANDORA ACCOUNT",
-    "password": "YOUR PANDORA PASSWORD",
+    "username": "username@example.com",
+    "password": "password",
     "partnerAuthToken": partnerAuthToken,
     "includeAdAttributes":True,
     "syncTime": syncTime
@@ -58,8 +58,10 @@ def MusicSearch(partnerId, userAuthToken, userId, syncTime, music):
     data = PandoraEncrypt(data)
     r = requests.post(url, params = parameter, data = data)
     r = r.json()
-    return r["result"]['artists'][0]['musicToken']
-
+    try:
+	return r["result"]['songs'][0]['musicToken']
+    except IndexError:
+	return r["result"]['artists'][0]['musicToken']
 
 def CreateStation(partnerId, userAuthToken, userId, syncTime, musicToken):
     url = "http://tuner.pandora.com/services/json/"
@@ -91,8 +93,8 @@ def GetPlaylist(partnerId, userAuthToken, userId, syncTime, stationToken):
 
     with open('music.txt', 'a') as f:
         for i in range(len(r["result"]["items"])-1):
-	    f.write(r["result"]["items"][i]['artistName'] + " - ")
-	    f.write(r["result"]["items"][i]['songName'] +"\n")
+	    f.write(r["result"]["items"][i]['artistName'].encode('utf-8') + " - ")
+	    f.write(r["result"]["items"][i]['songName'].encode('utf-8') +"\n")
             print r["result"]["items"][i]['artistName'],
             print r["result"]["items"][i]['songName']  
         f.close() 
