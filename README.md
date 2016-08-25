@@ -2,15 +2,17 @@ pandora2soundcloud
 ==================
 Hi and Welcome to pandora2soundcloud,
 
-This script will allow you take advantage of pandora AI searching song and the mobility of SoundCloud! 
+This script allows you to take advantage of Pandora AI searching song and the mobility of SoundCloud! 
 
-pandora2soundcloud need an US IP so unless you don't leave is US you can still use it with VPN connection or with other service such as Koding.com.
+pandora2soundcloud need an US IP so unless you don't live in the US you can still use it through a VPN connection or by using PaaS services such as Koding or OpenShift.
 
-You will need the soundcloud API https://github.com/soundcloud/soundcloud-python
+You will also need the soundcloud SDK https://github.com/soundcloud/soundcloud-python
 
-And FuzzyWuzzy : https://github.com/seatgeek/fuzzywuzzy
+And FuzzyWuzzy library : https://github.com/seatgeek/fuzzywuzzy
 
-You will also need a Pandora.com account and a soundcloud account with a registered apps: http://soundcloud.com/you/apps
+You need a Pandora and Soundcloud account with a registered app: http://soundcloud.com/you/apps
+
+More information about API :
 
 Pandora API : http://pan-do-ra-api.wikia.com/wiki/Json/5
 
