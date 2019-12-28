@@ -1,20 +1,37 @@
-pandora2soundcloud
-==================
-Hi and Welcome to pandora2soundcloud,
 
-This script allows you to take advantage of Pandora AI searching song and the mobility of SoundCloud! 
+# PandoraExport
 
-pandora2soundcloud need an US IP so unless you don't live in the US you can still use it through a VPN connection or by using PaaS services such as Koding or OpenShift.
+Hi and Welcome to PandoraExport,  
+  
+This script allows you to take advantage of Pandora AI searching song and export them into Json. 
 
-You will also need the soundcloud SDK https://github.com/soundcloud/soundcloud-python
+The advantage is that you can use the export file to automatically import songs from Pandora to another streaming platform such as Soundcloud or Spotify, freeing you from listening restrictions and ads.
+  
+To use PandoraExport, you need a US IP address, so unless you don't live in the US, you can still use it via a VPN connection or by running it on another machine in US/NZ/AU. 
+  
+## How to use it
+First you need to install dependencies with Pipenv
 
-And FuzzyWuzzy library : https://github.com/seatgeek/fuzzywuzzy
+    pipenv install
 
-You need a Pandora and Soundcloud account with a registered app: http://soundcloud.com/you/apps
+  Then activate the virtual environment
+  
 
-More information about API :
+    pipenv shell
 
-Pandora API : http://pan-do-ra-api.wikia.com/wiki/Json/5
+Before running the script you will probable need to set enviroment variables to connect use Pandora services
 
-SoundCloud API : https://developers.soundcloud.com/docs/api/guide
+    export PANDORA_USER=<your_pandora_login>
+    export PANDORA_PASSWORD=<your_pandora_password>
 
+Then you can run the script with (*recommended*) or without parameters.
+
+> For argument parsing reasons you need to replace **space** with **_** instead
+
+    python main.py --output export.json --limit 200 --artist echo_delta
+
+## More information about API :  
+  
+Pandora API: https://github.com/mcrute/pydora
+  
+Docopt: https://github.com/docopt/docopt
