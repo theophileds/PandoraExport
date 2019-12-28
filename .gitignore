@@ -130,3 +130,6 @@ dmypy.json
 
 # Every export files
 *.json
+
+# Ide files
+.idea
