@@ -24,7 +24,6 @@ from pandora_settings import pandora_credentials
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.INFO)
 
-
 class PandoraExporter(APIClientBuilder):
     def __init__(self, settings, **kwargs):
         self.settings = settings
@@ -41,15 +40,14 @@ class PandoraExporter(APIClientBuilder):
         if search_result.artists:
             songs_batch = defaultdict(list)
             # Each API call retrieve 4 songs
-            for x in range(limit // 4):
+            for i in range(limit // 4):
                 station_result = client.create_station(search_result.artists[0].token)
-
                 try:
                     playlist_result = client.get_playlist(station_result.token)
                 except PandoraException as e:
                     logging.info('Pandora exception error: {}'.format(e))
                     break
-                for song in list(filter(lambda x: not x.is_ad, playlist_result)):
+                for song in list(filter(lambda track: not track.is_ad, playlist_result)):
                     if song.song_name not in songs_batch[song.artist_name]:
                         songs_batch[song.artist_name].append(song.song_name)
                     logging.info('Fetching new song: {} - {}'.format(song.artist_name, song.song_name))
