@@ -1,15 +1,14 @@
 """PandoraExporter
 
 Usage:
-  main.py [--output result.json] [--limit 100] [--artist Echo_Delta] [--song None]
+  main.py [--artist Echo_Delta] [--song None] [--limit 100]
   main.py [-h | --help]
 
 Options:
   -h --help          Show this screen.
-  --output=filename  Output file name [default: output.json]
-  --limit=100        Maximum number of songs [default: 100]
   --artist=name      Name of the artist with _ instead of space [default: Echo_Delta]
   --song=song        Name of the song with _ instead of space [default: None]
+  --limit=100        Maximum number of songs [default: 100]
 
 """
 
@@ -74,8 +73,8 @@ class PandoraExporter(APIClientBuilder):
             logging.warning('No token provided')
 
     @classmethod
-    def export_playlist(cls, playlist, output):
-        with open(output, 'w') as output:
+    def export_playlist_to_json(cls, playlist, filename):
+        with open(filename, 'w') as output:
             output.writelines(json.dumps(playlist, sort_keys=True, ensure_ascii=False))
 
 
@@ -84,11 +83,10 @@ if __name__ == '__main__':
     artist = ' '.join(arguments.get('--artist').split('_'))
     song = ' '.join(arguments.get('--song').split('_'))
     limit = int(arguments.get('--limit'))
-    output_filename = arguments.get('--output')
     token = ''
 
     pandora_client = PandoraExporter(pandora_credentials)
     pandora_client.login()
     token = pandora_client.search_song(artist, song) if song != 'None' else pandora_client.search_artist(artist)
     playlist = pandora_client.generate_playlist(token, limit)
-    pandora_client.export_playlist(playlist, output_filename)
+    pandora_client.export_playlist_to_json(playlist, artist + '.json')
