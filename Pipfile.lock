@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "033d7b8eb0232a20b7cfeabee63b01f5921f02a16793c684c75850f77064bf8a"
+            "sha256": "04470ee79a58c08bb76d2c04a3ad0c924e609fee3d160e5f30ecc7ad6dfdf1a2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -141,6 +141,15 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.7"
+        },
+        "pick": {
+            "hashes": [
+                "sha256:78006b6c6b16f80921fe3e66c9730b3fa75b2732d464a9fcd4cab5a4ac75a42d",
+                "sha256:91bfa8c17dada639cf793cc4270db39fef8dc2d0c9c8a6be2f3d4d0d9ee58456"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==2.3.2"
         },
         "pydora": {
             "hashes": [

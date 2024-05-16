@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 pydora = "~=2.2"
 docopt = "~=0.6"
+pick = "~=2.3"
 
 [requires]
 python_version = "3.12"
