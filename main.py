@@ -32,17 +32,17 @@ class PandoraExporter(APIClientBuilder):
         self.client.login(self.settings['USERNAME'], self.settings['PASSWORD'])
     
     def search_song(self, artist, song):
-        search = self.client.search(artist + ' ' + song)
+        search = self.client.search(artist + ' ' + song, include_near_matches=True)
         if search.songs:
-            option, index = pick([song.song_name for song in search.songs], 'Select the song from {} you want to generate the playlist for:'.format(artist))
+            _, index = pick([song.song_name for song in search.songs], 'Select the song from {} you want to generate the playlist for:'.format(artist))
             return search.songs[index].token
         else:
             logging.warning('No Songs found for: {}'.format(artist))
 
     def search_artist(self, artist):
-        search = self.client.search(artist)
+        search = self.client.search(artist, include_near_matches=True)
         if search.artists:
-            option, index = pick([artist.artist for artist in search.artists], 'Select the artist you want to generate the playlist for:')
+            _, index = pick([artist.artist for artist in search.artists], 'Select the artist you want to generate the playlist for:')
             return search.artists[index].token
         else:
             logging.warning('No artist found for: {}'.format(artist))
