@@ -1,15 +1,12 @@
-"""PandoraExporter
-
-Usage:
-  main.py [--artist Echo_Delta] [--song None] [--limit 100]
-  main.py [-h | --help]
+"""
+PandoraExporter Usage: main.py --artist <artist> [--song <song>] [--limit <limit>] [--output <file>]
 
 Options:
-  -h --help          Show this screen.
-  --artist=name      Name of the artist with _ instead of space [default: Echo_Delta]
-  --song=song        Name of the song with _ instead of space [default: None]
-  --limit=100        Maximum number of songs [default: 100]
-
+  -h, --help            Show this screen.
+  -a, --artist <artist> Name of the artist (required). Enclose in quotes if it contains spaces.
+  -s, --song <song>     Name of the song (optional). Enclose in quotes if it contains spaces.
+  -l, --limit <limit>   Maximum number of songs [default: 100]
+  -o, --output <file>   Output file name (optional) [default: <artist>.json]
 """
 
 import json
@@ -44,7 +41,6 @@ class PandoraExporter(APIClientBuilder):
 
     def search_artist(self, artist):
         search = self.client.search(artist)
-        print(search.artists)
         if search.artists:
             option, index = pick([artist.artist for artist in search.artists], 'Select the artist you want to generate the playlist for:')
             return search.artists[index].token
@@ -80,13 +76,13 @@ class PandoraExporter(APIClientBuilder):
 
 if __name__ == '__main__':
     arguments = docopt(__doc__)
-    artist = ' '.join(arguments.get('--artist').split('_'))
-    song = ' '.join(arguments.get('--song').split('_'))
+    artist = arguments.get('--artist')
+    song = arguments.get('--song')
     limit = int(arguments.get('--limit'))
-    token = ''
+    output = arguments.get('--output').replace('<artist>', artist).replace(' ', '_')
 
     pandora_client = PandoraExporter(pandora_credentials)
     pandora_client.login()
-    token = pandora_client.search_song(artist, song) if song != 'None' else pandora_client.search_artist(artist)
+    token = pandora_client.search_song(artist, song) if song else pandora_client.search_artist(artist)
     playlist = pandora_client.generate_playlist(token, limit)
-    pandora_client.export_playlist_to_json(playlist, artist + '.json')
+    pandora_client.export_playlist_to_json(playlist, output)
