@@ -35,7 +35,7 @@ class PandoraExporter(APIClientBuilder):
         search = self.client.search(artist + ' ' + song, include_near_matches=True)
         if search.songs:
             _, index = pick([song.song_name for song in search.songs], 'Select the song from {} you want to generate the playlist for:'.format(artist))
-            return search.songs[index].token
+            return search.songs[index]
         else:
             logging.warning('No Songs found for: {}'.format(artist))
 
@@ -43,16 +43,16 @@ class PandoraExporter(APIClientBuilder):
         search = self.client.search(artist, include_near_matches=True)
         if search.artists:
             _, index = pick([artist.artist for artist in search.artists], 'Select the artist you want to generate the playlist for:')
-            return search.artists[index].token
+            return search.artists[index]
         else:
             logging.warning('No artist found for: {}'.format(artist))
 
-    def generate_playlist(self, token, limit):
-        if token:
+    def generate_playlist(self, item, limit):
+        if item:
             playlist = defaultdict(list)
             # Each API call retrieve 4 songs
             for i in range(limit // 4):
-                station = self.client.create_station(token)
+                station = item.create_station()
                 try:
                     songs = self.client.get_playlist(station.token)
                 except PandoraException as e:
@@ -83,6 +83,6 @@ if __name__ == '__main__':
 
     pandora_client = PandoraExporter(pandora_credentials)
     pandora_client.login()
-    token = pandora_client.search_song(artist, song) if song else pandora_client.search_artist(artist)
-    playlist = pandora_client.generate_playlist(token, limit)
+    item = pandora_client.search_song(artist, song) if song else pandora_client.search_artist(artist)
+    playlist = pandora_client.generate_playlist(item, limit)
     pandora_client.export_playlist_to_json(playlist, output)
